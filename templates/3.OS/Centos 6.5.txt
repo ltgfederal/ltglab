@@ -1,0 +1,19 @@
+===========================
+Centos 6.5
+===========================
+
+Partition Tables:
+ Kickstart default
+ RAID 5
+ RAID 5 Gluster
+ TestPartitions 
+
+Templates PXELinux
+ Kickstart Default PXE Linux
+
+Templates Provision
+ Kickstart Default
+ Kickstart VM Default
+ Kickstart RAID
+
+

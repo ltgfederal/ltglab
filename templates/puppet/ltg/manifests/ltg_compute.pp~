@@ -1,0 +1,28 @@
+# Class: motd
+#
+# This module manages the /etc/motd file using a template
+#
+# Parameters:
+#
+# Actions:
+#
+# Requires:
+#
+# Sample Usage:
+# include motd
+#
+# [Remember: No empty lines between comments and class definition]
+class ltg::ltg_compute (
+	$template = 'ltg/motd.erb'
+	) {
+
+	package { 'yum-plugin-priorities':
+		ensure => true,
+		}
+        service { 'libvirtd':
+                ensure => running,
+		enable => true,
+                }
+
+	}
+

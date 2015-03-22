@@ -1,0 +1,201 @@
+
+###########################################################
+                  Controller Startup
+###########################################################
+              mysqlice101 and mysqlice102
+###########################################################
+! Power Up SQL CLuster nodes
+
+! Start Cluster Services
+# service cman start
+# service pacemaker start
+
+! Verify Cluster Status
+# pcs status
+! Verify drbd status
+# drb-overview
+
+! Verify SQL Server
+# mysql -p -u root
+mysql> status
+
+! 
+###########################################################
+              rabbitni101 and rabbitni102
+###########################################################
+! Verify Rabbit Cluster is running
+# rabbitmqctl cluster_status
+
+###########################################################
+              keystni101 and keystni102
+###########################################################
+! Power Up Keystone CLuster
+
+! Start Cluster Services
+# service cman start
+# service pacemaker start
+
+! Verify Cluster Status
+# pcs status
+
+! Start keystone service
+# service openstack-keystone start
+
+! Verify keystone service is running
+service openstack-keystone status
+
+! Test keystone service
+! verify credential variables are loaded
+# source openrc.sh
+! Test keystone 
+# keystone user-list
+
+###########################################################
+              glanceni101 and glanceni102
+###########################################################
+! Power Up Glance CLuster
+
+! Start Cluster Services
+# service cman start
+# service pacemaker start
+
+! Verify Cluster Status
+# pcs status
+
+! Start Glance Services
+# service openstack-glance-api start
+# service openstack-glance-registry start
+
+! Start Glance Services
+# service openstack-glance-api status
+# service openstack-glance-registry status
+
+! Test glance service
+! verify credential variables are loaded
+# source openrc.sh
+! Test Glance 
+# glance image-list
+
+###########################################################
+              neutroni101 and neutroni102
+###########################################################
+! Power Up Neutron Controller CLuster
+
+! Start Cluster Services
+# service cman start
+# service pacemaker start
+
+! Verify Cluster Status
+# pcs status
+
+! Start Neutron Service
+# service neutron-server start
+
+! Verify Neutron Service status
+# service neutron-server status
+
+###########################################################
+              novani101 and novani102
+###########################################################
+! Power Up Nova Controller Cluster
+
+! Start Cluster Services
+# service cman start
+# service pacemaker start
+
+! Verify Cluster Status
+# pcs status
+
+! Start Nova Controller Services 
+for i in \
+  openstack-nova-api openstack-nova-cert openstack-nova-consoleauth \
+  openstack-nova-scheduler openstack-nova-conductor openstack-nova-novncproxy; \
+  do service ${i} start; done
+
+! Verify Nova Controller Services 
+for i in \
+  openstack-nova-api openstack-nova-cert openstack-nova-consoleauth \
+  openstack-nova-scheduler openstack-nova-conductor openstack-nova-novncproxy; \
+  do service ${i} status; done
+
+! Testing Nova services.
+! verify credential variables are loaded
+# source openrc.sh
+# nova image-list
+
+###########################################################
+              Compute Nodes
+###########################################################
+! Start Nova-Compute Service
+# service libvirtd status
+# service messagebus status
+# service openvswitch status
+# service openstack-nova-compute status
+# service neutron-openvswitch-agent status
+# service openstack-ceilometer-compute status
+
+###########################################################
+              Neutron Nodes
+###########################################################
+
+# service openvswitch status
+
+for i in \
+  neutron-openvswitch-agent neutron-l3-agent neutron-dhcp-agent neutron-metadata-agent; \
+  do service ${i} status; done
+
+###########################################################
+              storeni101 and storeni102
+###########################################################
+! Power Up Nova Controller Cluster
+
+! Start Cluster Services
+# service cman start
+# service pacemaker start
+
+! Verify Cluster Status
+# pcs status
+
+  
+! Start Block Storage Service
+# service openstack-cinder-api start
+# service openstack-cinder-scheduler start
+
+###########################################################
+              ceiloni101 and ceiloni102
+###########################################################
+! On ceiloni101
+! Start Mongo database service
+#service mongod start
+! Start ceilometer services
+for i in \
+  openstack-ceilometer-api openstack-ceilometer-notification openstack-ceilometer-central  \
+  openstack-ceilometer-collector openstack-ceilometer-alarm-evaluator openstack-ceilometer-alarm-notifier; \
+  do service ${i} status; done
+
+
+
+###########################################################
+              horizoni101 and horizoni102
+###########################################################
+! Start cluster services
+# service cman start
+# service pacemaker start
+! Verify memcache service is running on both nodes
+# service memcached status
+! Start httpd service on horizoni101
+# service httpd start
+###########################################################
+              Login
+###########################################################
+! Login via webinterface
+http://192.168.3.85/dashboard
+
+! Verify under system information all openstack services are enabled.
+
+
+
+
+
+
+

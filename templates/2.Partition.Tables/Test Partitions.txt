@@ -1,0 +1,14 @@
+###############################################################
+# Bootloader Info
+bootloader --location=mbr --append="crashkernel=auto rhgb quiet"
+clearpart --all 
+
+part /boot --fstype=ext4 --size=500
+part pv.01 --grow --size=1
+
+volgroup vg_labsrv --pesize=4096 pv.01
+logvol / --fstype=ext4 --name=lv_root --vgname=vg_labsrv --grow --size=1024 --maxsize=2500
+#logvol /home --fstype=ext4 --name=lv_home --vgname=vg_labsrv --grow --size=100
+logvol swap --name=lv_swap --vgname=vg_labsrv --grow --size=100 --maxsize=200
+
+

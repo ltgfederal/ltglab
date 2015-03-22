@@ -1,0 +1,60 @@
+=========================================
+PUPPET ETH0
+[root@puppet network-scripts]# cat ifcfg-eth0
+
+DEVICE=eth0
+TYPE=Ethernet
+UUID=73fb7186-5f54-4660-8afa-40c211d9cb73
+ONBOOT=yes
+NM_CONTROLLED=yes
+BOOTPROTO=none
+HWADDR=00:50:56:83:DA:E0
+IPADDR=192.168.3.151
+PREFIX=24
+GATEWAY=192.168.3.1
+DNS1=192.168.2.2
+DEFROUTE=yes
+IPV4_FAILURE_FATAL=yes
+IPV6INIT=no
+NAME="System eth0"
+
+
+=========================================
+PUPPET ETH0:1
+[root@puppet network-scripts]# cat ifcfg-eth0:1
+
+DEVICE=eth0:1
+TYPE=Ethernet
+ONBOOT=yes
+NM_CONTROLLED=no
+BOOTPROTO=none
+HWADDR=00:50:56:83:DA:E0
+IPADDR=192.168.6.151
+PREFIX=24
+DEFROUTE=no
+IPV4_FAILURE_FATAL=yes
+IPV6INIT=no
+NAME="eth0:1"
+
+==========================================
+[root@puppet sysconfig]# cat network
+NETWORKING=yes
+HOSTNAME=puppet.hq.ltg
+GATEWAY=192.168.3.1
+
+==========================================
+[root@puppet sysconfig]# cat system-config-firewall
+# Configuration file for system-config-firewall
+
+--enabled
+--service=ssh
+
+==========================================
+http://www.itadmintools.com/2012/10/home-lab-centos-63-as-firewall-and.html
+
+Kernel Forwarding
+By default, the linux kernel is configured not to forward packets between interfaces.  This is usually a good thing, as you wouldn't want every linux box to act like a router, but we do in this case.  The file that controls kernel behavior with respect to ip networking is /etc/sysctl.conf.  We edit the file and find the line that reads net.ipv4.ip_forward = 0 and change the 0 to a 1.  Now the next time we reboot, the kernel will forward packets.  However, there's still one more thing that will stop us from forwarding, the iptables firewall on CentOS.
+
+
+==========================================
+

@@ -1,0 +1,29 @@
+<%#
+kind: ptable
+name: Community Kickstart Disklayout
+oses:
+- CentOS 5
+- CentOS 6
+- Fedora 16
+- Fedora 17
+- Fedora 18
+- Fedora 19
+- RedHat 5
+- RedHat 6
+%>
+
+
+###############################################################
+# Bootloader Info
+bootloader --location=mbr --driveorder=cciss/c0d0 --append="crashkernel=auto rhgb quiet"
+clearpart --all --drives=cciss/c0d0
+
+part /boot --fstype=ext4 --size=500
+part pv.01 --grow --size=1
+
+volgroup vg_labsrv --pesize=4096 pv.01
+logvol /home --fstype=ext4 --name=lv_home --vgname=vg_labsrv --grow --size=1000 --maxsize=5000
+logvol / --fstype=ext4 --name=lv_root --vgname=vg_labsrv --grow --size=1024
+logvol swap --name=lv_swap --vgname=vg_labsrv --grow --size=8000 --maxsize=8000
+
+

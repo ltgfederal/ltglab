@@ -1,0 +1,47 @@
+How to Unpack and Rebuild initrd.img or initramfs.img
+http://www.xensoft.com/content/how-unpack-and-rebuild-initrdimg-or-initramfsimg
+
+How do I add myri10ge to RHEL5s install initrd?
+https://www.myricom.com/software/myri10ge/366-how-do-i-add-myri10ge-to-rhel5s-install-initrd.html
+
+ElRepo:
+http://elrepo.org/bugs/view.php?id=495
+
+
+Possible use of driver for HP SmartArray P400(cciss)
+https://www.centos.org/forums/viewtopic.php?f=49&t=47011
+
+
+1. Get initrd.img file
+2. mkdir tmp
+3. Decompress: xz -dc initrd.img > ./tmp/ramdisk
+4. cd tmp
+5. Verify: file ramdisk
+6. Mkdir to extract: mkdir ramdisk2
+7. cd ramdisk2
+8. Extract: sudo cpio -id < ../ramdisk2
+
+9. Modify files inside
+
+
+Added the following to modules.alias
+alias pci:v0000103Cd00003230sv0000103Csd0000323Dbc*sc*i* cciss
+alias pci:v0000103Cd00003230sv0000103Csd00003237bc*sc*i* cciss
+alias pci:v0000103Cd00003230sv0000103Csd00003235bc*sc*i* cciss
+alias pci:v0000103Cd00003230sv0000103Csd00003234bc*sc*i* cciss
+alias pci:v0000103Cd00003230sv0000103Csd00003223bc*sc*i* cciss
+
+
+Modules.dep
+kernel/drivers/scsi/cciss.ko:
+
+Modules.order
+kernel/drivers/scsi/cciss.ko
+
+10. Compress:
+sudo find . | cpio --create --format='newc' > /home/ibravo/Downloads/trash/Centos7/images/pxeboot/tmp/newinitramfs
+
+11. cd ..
+12. xz -zc ./tmp/newinitramfs > newinitrd.img
+
+
